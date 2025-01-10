@@ -7,6 +7,6 @@
 <br>
 
 <div>
-  <%= link_to "Show this task", @task %> |
-  <%= link_to "Back to tasks", tasks_path %>
+  <%= link_to "Show this task", [@list, @task] %> |
+  <%= link_to "Back to tasks", list_tasks_path(@list, @task) %>
 </div>

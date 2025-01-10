@@ -8,7 +8,7 @@
   <% @lists.each do |list| %>
     <%= render list %>
     <p>
-      <%= link_to "Show this list", list %>
+      <%= link_to "Show tasks", list_tasks_path(list) %>
     </p>
   <% end %>
 </div>

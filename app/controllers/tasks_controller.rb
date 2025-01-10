@@ -37,16 +37,27 @@ class TasksController < ApplicationController
 
   # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
-    respond_to do |format|
-      if @task.update(task_params)
-        format.html { redirect_to [ @list, @task ], notice: "Task was successfully updated." }
-        format.json { render :show, status: :ok, location: @task }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
+    if params[:completed].present?
+      @task.update(completed: params[:completed] == "true")
+      Rails.logger.info "Task #{@task.id} updated: #{@task.completed}"
+      respond_to do |format|
+        format.html { redirect_to list_tasks_path(@list), notice: "Task status updated successfully." }
+      end
+    else
+      respond_to do |format|
+        if @task.update(task_params)
+          Rails.logger.info "Task #{@task.id} updated: #{@task.attributes}"
+          format.html { redirect_to [ @list, @task ], notice: "Task was successfully updated." }
+          format.json { render :show, status: :ok, location: @task }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @task.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
+
+
 
   # DELETE /tasks/1 or /tasks/1.json
   def destroy

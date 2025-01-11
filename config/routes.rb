@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :users, only: [ :new, :create, :show ] # Rotas para sign up
+  resources :users, only: [ :new, :create ] # Rotas para sign up
   resource :session, only: [ :new, :create, :destroy ] # Rotas para login/logout
 
   resources :passwords, param: :token

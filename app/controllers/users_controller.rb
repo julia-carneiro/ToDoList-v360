@@ -1,23 +1,14 @@
 class UsersController < ApplicationController
   allow_unauthenticated_access only: [ :new, :create ]
-  before_action :set_user, only: %i[show edit]
 
   # GET /users or /users.json
   def index
     @users = User.all
   end
 
-  # GET /users/1 or /users/1.json
-  def show
-  end
-
   # GET /users/new
   def new
     @user = User.new
-  end
-
-  # GET /users/1/edit
-  def edit
   end
 
   # POST /users or /users.json
@@ -26,7 +17,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: "User was successfully created." }
+        format.html { redirect_to new_session_path, notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }

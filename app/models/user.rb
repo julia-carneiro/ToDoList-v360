@@ -5,6 +5,10 @@ class User < ApplicationRecord
   has_many :lists, dependent: :destroy
   has_many :sessions, dependent: :destroy
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+  validates :email_address, presence: true, uniqueness: true
+  validates :confirmation_token, uniqueness: true, allow_nil: true
+  validates :password, confirmation: true
+  validates :password_confirmation, presence: true
 
   def confirm!
     update!(confirmation_token: nil)
@@ -19,6 +23,4 @@ class User < ApplicationRecord
   def generate_confirmation_token
     self.confirmation_token ||= SecureRandom.urlsafe_base64
   end
-
-  validates :confirmation_token, uniqueness: true, allow_nil: true
 end

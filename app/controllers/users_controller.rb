@@ -20,7 +20,7 @@ class UsersController < ApplicationController
         flash[:alert] = "E-mail already registered. Please, try another adress."
         format.html { render :new, status: :unprocessable_entity }
       elsif @user.save
-        UserMailer.welcome_and_confirmation_email(@user).deliver_now
+        UserMailer.welcome_and_confirmation_email(@user).deliver_later
         format.html { redirect_to new_session_path, notice: "Please check your email to confirm your account." }
         format.json { render :show, status: :created, location: @user }
       else

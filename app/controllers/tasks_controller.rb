@@ -4,7 +4,7 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = @list.tasks
+    @tasks = @list.tasks.page(params[:page]).per(4)
   end
 
   # GET /tasks/1 or /tasks/1.json

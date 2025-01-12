@@ -3,7 +3,7 @@ class ListsController < ApplicationController
 
   # GET /lists or /lists.json
   def index
-    @lists = current_user.lists
+    @lists = current_user.lists.page(params[:page]).per(8)
   end
 
   # GET /lists/1 or /lists/1.json

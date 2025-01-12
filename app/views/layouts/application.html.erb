@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="bg-gray-50">
+<html class="h-full bg-gray-50">
   <head>
     <title><%= content_for(:title) || "Todolist" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -24,9 +24,11 @@
 
   </head>
 
-  <body>
-    <main class="bg-gray-50 container mx-auto mt-28 px-5 flex">
-      <%= yield %>
+  <body class="h-full overflow-hidden">
+    <main class="h-full flex flex-col bg-gray-50">
+      <div class="container mx-auto px-5 flex flex-col h-full">
+        <%= yield %>
+      </div>
     </main>
   </body>
 </html>

@@ -83,8 +83,6 @@ production:
   primary: &primary_production
     <<: *default
     database: todolist_production
-    username: todolist
-    password: <%= ENV["TODOLIST_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
     database: todolist_production_cache

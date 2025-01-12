@@ -7,4 +7,5 @@ Rails.application.routes.draw do
     resources :tasks
   end
   root to: "lists#index"
+  get "confirm/:token", to: "confirmations#edit", as: :edit_confirmation
 end

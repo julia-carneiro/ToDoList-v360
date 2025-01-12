@@ -10,6 +10,10 @@ module Authentication
     def allow_unauthenticated_access(**options)
       skip_before_action :require_authentication, **options
     end
+
+    def redirect_user_to_lists(**options)
+      before_action :redirect_user_to_lists, **options
+    end
   end
 
   private
@@ -24,6 +28,10 @@ module Authentication
 
     def require_authentication
       resume_session || request_authentication
+    end
+
+    def redirect_user_to_lists
+      redirect_to lists_path if authenticated?
     end
 
     def resume_session

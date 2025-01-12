@@ -17,7 +17,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to new_session_path, notice: "User was successfully created." }
+        UserMailer.welcome_and_confirmation_email(@user).deliver_now
+        format.html { redirect_to new_session_path, notice: "Please check your email to confirm your account." }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }

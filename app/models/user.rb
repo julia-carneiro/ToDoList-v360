@@ -5,13 +5,12 @@ class User < ApplicationRecord
   has_many :lists, dependent: :destroy
   has_many :sessions, dependent: :destroy
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+
   validates :email_address, presence: true, uniqueness: true
   validates :confirmation_token, uniqueness: true, allow_nil: true
-  validates :password, confirmation: true
-  validates :password_confirmation, presence: true
 
   def confirm!
-    update!(confirmation_token: nil)
+    update_columns(confirmation_token: nil)
   end
 
   def confirmed?

@@ -25,6 +25,16 @@ Rails.application.configure do
     config.action_controller.perform_caching = false
   end
 
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+  config.action_mailer.smtp_settings = {
+    domain: Rails.application.credentials.dig(:smtp, :domain),
+    user_name: Rails.application.credentials.dig(:smtp, :user_name),
+    password: Rails.application.credentials.dig(:smtp, :password),
+    address: "smtp.gmail.com",
+    port: 587,
+    authentication: :plain
+  }
+
   # Change to :null_store to avoid any caching.
   config.cache_store = :memory_store
 

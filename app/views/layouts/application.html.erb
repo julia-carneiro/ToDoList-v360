@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full bg-gray-50">
   <head>
     <title><%= content_for(:title) || "Todolist" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -18,11 +18,17 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="h-full overflow-hidden">
+    <main class="h-full flex flex-col bg-gray-50">
+      <div class="container mx-auto px-5 flex flex-col h-full">
+        <%= yield %>
+      </div>
+    </main>
   </body>
 </html>

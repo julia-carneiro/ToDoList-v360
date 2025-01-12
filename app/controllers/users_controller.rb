@@ -16,13 +16,16 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     respond_to do |format|
-      if @user.save
+      if User.exists?(email_address: @user.email_address)
+        flash[:alert] = "E-mail already registered. Please, try another adress."
+        format.html { render :new, status: :unprocessable_entity }
+      elsif @user.save
         UserMailer.welcome_and_confirmation_email(@user).deliver_now
         format.html { redirect_to new_session_path, notice: "Please check your email to confirm your account." }
         format.json { render :show, status: :created, location: @user }
       else
+        flash[:alert] = @user.errors.full_messages.to_sentence
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end

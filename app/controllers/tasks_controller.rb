@@ -1,23 +1,15 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[ show edit update destroy ]
+  before_action :set_task, only: %i[ update destroy ]
   before_action :set_list
 
   # GET /tasks or /tasks.json
   def index
     @tasks = @list.tasks.page(params[:page]).per(4)
+    @task = Task.new
   end
 
   # GET /tasks/1 or /tasks/1.json
   def show
-  end
-
-  # GET /tasks/new
-  def new
-    @task = Task.new
-  end
-
-  # GET /tasks/1/edit
-  def edit
   end
 
   # POST /tasks or /tasks.json
@@ -37,14 +29,15 @@ class TasksController < ApplicationController
   def update
     if params[:completed].present?
       @task.update(completed: params[:completed] == "true")
-      Rails.logger.info "Task #{@task.id} updated: #{@task.completed}"
+
       respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("task_#{@task.id}", partial: "tasks/task", locals: { task: @task }) }
         format.html { redirect_to list_tasks_path(@list) }
       end
     else
       respond_to do |format|
         if @task.update(task_params)
-          Rails.logger.info "Task #{@task.id} updated: #{@task.attributes}"
+          format.turbo_stream { render turbo_stream: turbo_stream.replace("task_#{@task.id}", partial: "tasks/task", locals: { task: @task }) }
           format.html { redirect_to [ @list, @task ] }
           format.json { render :show, status: :ok, location: @task }
         else
@@ -55,13 +48,12 @@ class TasksController < ApplicationController
     end
   end
 
-
-
   # DELETE /tasks/1 or /tasks/1.json
   def destroy
     @task.destroy!
 
     respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove("task_#{@task.id}") }
       format.html { redirect_to [ @list, @task ], status: :see_other }
       format.json { head :no_content }
     end

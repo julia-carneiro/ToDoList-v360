@@ -1,22 +1,10 @@
 class ListsController < ApplicationController
-  before_action :set_list, only: %i[ show edit update destroy ]
+  before_action :set_list, only: %i[ update destroy ]
 
   # GET /lists or /lists.json
   def index
     @lists = current_user.lists.page(params[:page]).per(8)
-  end
-
-  # GET /lists/1 or /lists/1.json
-  def show
-  end
-
-  # GET /lists/new
-  def new
-    @list = current_user.lists.new
-  end
-
-  # GET /lists/1/edit
-  def edit
+    @form_list = current_user.lists.new # This variable is used in the Create list form to render the modal
   end
 
   # POST /lists or /lists.json

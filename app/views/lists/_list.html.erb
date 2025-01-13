@@ -1,45 +1,55 @@
-<%# app/views/lists/_list.html.erb %>
 <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
-  <div class="mb-4">
-    <h2 class="font-semibold text-lg"><%= list.name %></h2>
-    <p class="text-gray-600"><%= list.description %></p>
-  </div>
+  <div class="flex flex-col h-full">
+    <div class="flex-grow mb-4">
+      <h2 class="font-semibold text-lg mb-2"><%= list.name.capitalize %></h2>
+      <% if list.description.present? %>
+        <p class="text-gray-600"><%= list.description.capitalize %></p>
+      <% end %>
+    </div>
 
-  <div class="flex justify-between items-center">
-    <div data-controller="modal">
-      <!-- Edit button -->
-      <button data-action="modal#open" class="text-gray-600 hover:text-gray-800 flex items-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-        </svg>
-        Edit
-      </button>
+    <div class="flex justify-between items-center pt-2">
+      <div data-controller="modal">
+        <!-- Edit button -->
+        <button data-action="modal#open" 
+            class="text-lg inline-flex items-center gap-2 px-3 py-2 text-orange-600 hover:text-orange-800 hover:bg-orange-50 rounded-md transition-colors duration-200">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          Edit
+        </button>
 
-      <!-- Edit Modal -->
-      <div data-modal-target="modal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50" data-action="click->modal#closeBackground">
-        <div class="relative mx-auto max-w-md w-full">
-          <div class="bg-white rounded-2xl shadow-lg p-8">
-            <div class="text-center mb-8">
-              <h2 class="text-rose-500 text-3xl font-bold tracking-tight">
-                Edit List
-              </h2>
-              <p class="mt-2 text-sm text-gray-500">
-                Update your list details
-              </p>
+        <!-- Edit Modal -->
+        <div data-modal-target="modal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50" data-action="click->modal#closeBackground">
+          <div class="relative mx-auto max-w-md w-full">
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+              <div class="text-center mb-8">
+                <div class="inline-flex p-3 rounded-full bg-rose-100 text-rose-600 mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                  </svg>
+                </div>
+                <h2 class="text-rose-500 text-3xl font-bold tracking-tight">
+                  Edit List
+                </h2>
+                <p class="mt-2 text-sm text-gray-500">
+                  Update your list details
+                </p>
+              </div>
+              <!-- Render form -->
+              <%= render 'form', list: list %>
             </div>
-            <!-- Render form -->
-            <%= render 'form', list: list %>
           </div>
         </div>
       </div>
-    </div>
         
-    <!-- Link to visualize tasks -->
-    <%= link_to list_tasks_path(list), class: "text-blue-600 hover:text-blue-800 flex items-center gap-2" do %>
-      View Tasks
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
-    <% end %>
+      <!-- Link to visualize tasks -->
+      <%= link_to list_tasks_path(list), 
+          class: "text-lg inline-flex items-center gap-2 px-3 py-2 text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-md transition-colors duration-200" do %>
+        View Tasks
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      <% end %>
+    </div>
   </div>
 </div>

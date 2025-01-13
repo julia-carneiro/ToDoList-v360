@@ -1,104 +1,85 @@
-<div class="w-full">
-  <div class="w-full px-4 sm:px-6 lg:px-8 py-4">
+<div class="min-h-screen bg-gradient-to-br from-rose-50 to-orange-50 pb-20">
+  <div class="w-full px-4 sm:px-6 lg:px-8 py-6">
+    <!-- Header Section with Logout -->
     <div class="flex justify-end items-center mb-4">
-      <div>
-        <%= button_to session_path, method: :delete, class: "text-rose-600 hover:text-rose-900 flex items-center gap-2 font-bold" do %>
-          Logout
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
-          </svg>
-        <% end %>
-      </div>
+      <%= button_to session_path, method: :delete, 
+          class: "text-rose-600 hover:text-rose-700 flex items-center gap-2 font-medium bg-white/80 backdrop-blur-sm py-2 px-4 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md" do %>
+        Logout
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+        </svg>
+      <% end %>
     </div>
 
+    <!-- Welcome Section -->
     <div data-controller="modal">
-      <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">Hello, <%= current_user.username %>!</h1>
-        <button data-action="modal#open" class="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-lg shadow-sm transition-colors duration-200">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
+        <div>
+          <h1 class="text-4xl font-bold text-gray-900">
+            Hello, <span class="bg-gradient-to-r from-rose-600 to-orange-600 bg-clip-text text-transparent"><%= current_user.username.capitalize  %>!</span>
+          </h1>
+          <p class="mt-2 text-gray-600">Organize your tasks and boost your productivity</p>
+        </div>
+        <button data-action="modal#open" 
+            class="group px-6 py-3 bg-gradient-to-r from-rose-500 to-orange-500 text-white rounded-lg shadow-sm transition-all duration-200 hover:shadow-lg hover:translate-y-[-2px] active:translate-y-0 flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
           Create New List
         </button>
       </div>
 
       <!-- Modal -->
-      <div data-modal-target="modal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50" data-action="click->modal#closeBackground">
-        <div class="relative mx-auto max-w-md w-full">
-          <div class="bg-white rounded-2xl shadow-lg p-8">
+      <div data-modal-target="modal" class="hidden fixed inset-0 bg-gray-500/75 backdrop-blur-sm flex items-center justify-center z-50" data-action="click->modal#closeBackground">
+        <div class="relative mx-auto max-w-md w-full px-4">
+          <div class="bg-white rounded-2xl shadow-xl p-8 transform transition-all duration-200">
             <div class="text-center mb-8">
-              <h2 class="text-rose-500 text-3xl font-bold tracking-tight">
+              <div class="inline-flex p-3 rounded-full bg-rose-100 text-rose-600 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </div>
+              <h2 class="text-rose-600 text-3xl font-bold tracking-tight">
                 Create a new list
               </h2>
-              <p class="mt-2 text-sm text-gray-500">
+              <p class="mt-2 text-gray-500">
                 Add a new list to organize your tasks
               </p>
             </div>
             
-            <%= form_with(model: List.new, class: "space-y-6") do |form| %>
-              <div>
-                <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
-                <%= form.text_field :name, 
-                    required: true,
-                    autofocus: true,
-                    placeholder: "Ex: Science project",
-                    class: "mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-300 transition duration-150" %>
-              </div>
-
-              <div>
-                <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
-                <%= form.text_area :description, 
-                    rows: 3,
-                    placeholder: "Describe your project",
-                    class: "mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-300 transition duration-150" %>
-              </div>
-
-              <div class="flex items-center justify-between gap-4">
-                <button type="button" 
-                        data-action="modal#close" 
-                        class="w-1/2 py-2 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition duration-150">
-                  Cancel
-                </button>
-                <%= form.submit "Create List", 
-                    class: "w-1/2 py-2 px-4 bg-rose-500 text-white rounded-lg hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-300 transition duration-150" %>
-              </div>
-            <% end %>
+            <%= render 'lists/form', list: @form_list %>
           </div>
         </div>
       </div>
     </div>
-      </div>
+
+    <!-- Lists Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
+      <% @lists.each do |list| %>
+        <%= render 'lists/list', list: list %>
+      <% end %>
     </div>
   </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <% @lists.each do |list| %>
-        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
-          <div class="mb-4">
-            <h2 class="font-semibold text-lg"><%= list.name %></h2>
-            <p class="text-gray-600">Description: <%= list.description %></p>
-          </div>
-          <%= link_to list_tasks_path(list), class: "text-blue-600 hover:text-blue-800 flex items-center justify-end gap-2" do %>
-            View Tasks
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
+  <!-- Pagination -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 py-4 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-center items-center gap-3">
+        <%= link_to_if @lists.prev_page, 'Previous', lists_path(page: @lists.prev_page), 
+            class: "text-gray-700 hover:text-rose-600 #{@lists.prev_page ? '' : 'opacity-50 cursor-not-allowed'}" %>
+        
+        <div class="flex items-center gap-2">
+          <% (@lists.current_page-1..@lists.current_page+1).each do |page| %>
+            <% if page > 0 && page <= @lists.total_pages %>
+              <%= link_to page, lists_path(page: page),
+                  class: "px-4 py-2 rounded-md transition-colors duration-200 #{page == @lists.current_page ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-sm' : 'text-gray-700 hover:bg-gray-100'}" %>
+            <% end %>
           <% end %>
         </div>
-      <% end %>
-    </div>
-  </div>
-  <div class="flex-none py-6 px-5">
-    <div class="flex justify-center items-center gap-2">
-      <%= link_to_if @lists.prev_page, 'Previous', lists_path(page: @lists.prev_page), 
-          class: "text-gray-700 hover:text-gray-900" %>
-      
-      <% (@lists.current_page-1..@lists.current_page+1).each do |page| %>
-        <% if page > 0 && page <= @lists.total_pages %>
-          <%= link_to page, lists_path(page: page),
-              class: "px-3 py-1 rounded-lg #{page == @lists.current_page ? 'bg-blue-600 text-white' : ''}" %>
-        <% end %>
-      <% end %>
 
-      <%= link_to_if @lists.next_page, 'Next', lists_path(page: @lists.next_page), 
-          class: "text-gray-700 hover:text-gray-900" %>
+        <%= link_to_if @lists.next_page, 'Next', lists_path(page: @lists.next_page),
+            class: "text-gray-700 hover:text-rose-600 #{@lists.next_page ? '' : 'opacity-50 cursor-not-allowed'}" %>
+      </div>
     </div>
   </div>
 </div>

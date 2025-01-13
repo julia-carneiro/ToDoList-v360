@@ -4,11 +4,7 @@ class ListsController < ApplicationController
   # GET /lists or /lists.json
   def index
     @lists = current_user.lists.page(params[:page]).per(8)
-  end
-
-  # GET /lists/new
-  def new
-    @list = current_user.lists.new
+    @form_list = current_user.lists.new # This variable is used in the Create list form to render the modal
   end
 
   # POST /lists or /lists.json

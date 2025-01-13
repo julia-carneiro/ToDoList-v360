@@ -1,8 +1,8 @@
-<div class="w-full bg-gray-50">
+<div class="w-full">
   <div class="w-full px-4 sm:px-6 lg:px-8 py-4">
     <div class="flex justify-end items-center mb-4">
       <div>
-        <%= button_to session_path, method: :delete, class: "text-gray-600 hover:text-gray-900 flex items-center gap-2 font-bold" do %>
+        <%= button_to session_path, method: :delete, class: "text-rose-600 hover:text-rose-900 flex items-center gap-2 font-bold" do %>
           Logout
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
@@ -10,16 +10,69 @@
         <% end %>
       </div>
     </div>
-    <div class="flex justify-between items-center mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Hello, <%= current_user.username %>!</h1>
-      <%= link_to 'Create New List', new_list_path, class: "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200" %>
+
+    <div data-controller="modal">
+      <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Hello, <%= current_user.username %>!</h1>
+        <button data-action="modal#open" class="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-lg shadow-sm transition-colors duration-200">
+          Create New List
+        </button>
+      </div>
+
+      <!-- Modal -->
+      <div data-modal-target="modal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50" data-action="click->modal#closeBackground">
+        <div class="relative mx-auto max-w-md w-full">
+          <div class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="text-center mb-8">
+              <h2 class="text-rose-500 text-3xl font-bold tracking-tight">
+                Create a new list
+              </h2>
+              <p class="mt-2 text-sm text-gray-500">
+                Add a new list to organize your tasks
+              </p>
+            </div>
+            
+            <%= form_with(model: List.new, class: "space-y-6") do |form| %>
+              <div>
+                <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+                <%= form.text_field :name, 
+                    required: true,
+                    autofocus: true,
+                    placeholder: "Ex: Science project",
+                    class: "mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-300 transition duration-150" %>
+              </div>
+
+              <div>
+                <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+                <%= form.text_area :description, 
+                    rows: 3,
+                    placeholder: "Describe your project",
+                    class: "mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-300 transition duration-150" %>
+              </div>
+
+              <div class="flex items-center justify-between gap-4">
+                <button type="button" 
+                        data-action="modal#close" 
+                        class="w-1/2 py-2 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition duration-150">
+                  Cancel
+                </button>
+                <%= form.submit "Create List", 
+                    class: "w-1/2 py-2 px-4 bg-rose-500 text-white rounded-lg hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-300 transition duration-150" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
+      </div>
+    </div>
+  </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <% @lists.each do |list| %>
         <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
           <div class="mb-4">
-            <h2 class="font-semibold text-lg">Name: <%= list.name %></h2>
+            <h2 class="font-semibold text-lg"><%= list.name %></h2>
             <p class="text-gray-600">Description: <%= list.description %></p>
           </div>
           <%= link_to list_tasks_path(list), class: "text-blue-600 hover:text-blue-800 flex items-center justify-end gap-2" do %>

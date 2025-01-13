@@ -1,17 +1,61 @@
-<div id="<%= dom_id task %>">
-  <p>
-    <strong>Title:</strong>
-    <%= task.title %>
-  </p>
+<div id="task_<%= task.id %>" class="bg-white rounded-lg shadow p-4" data-controller="task-edit">
+  <!-- View Mode -->
+  <div data-task-edit-target="viewMode">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <%= button_to list_task_path(@list, task, completed: !task.completed),
+            method: :patch,
+            class: "flex-shrink-0" do %>
+          <div class="w-6 h-6 rounded-full border-2 <%= task.completed ? 'bg-green-500 border-green-500' : 'border-gray-300' %> flex items-center justify-center">
+            <% if task.completed %>
+              <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>  
+            <% end %>
+          </div>
+        <% end %>
+        
+        <span class="<%= task.completed ? 'line-through text-gray-500' : 'text-gray-900' %>">
+          <%= task.title %>
+        </span>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <button data-action="task-edit#showEdit" class="text-gray-400 hover:text-gray-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+        </button>
 
-  <p>
-    <strong>Completed:</strong>
-    <%= task.completed %>
-  </p>
+        <%= button_to list_task_path(@list, task), 
+            method: :delete,
+            class: "text-red-400 hover:text-red-600",
+            form: { data: { turbo_confirm: "Are you sure?" } } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
-  <p>
-    <strong>List:</strong>
-    <%= task.list_id %>
-  </p>
-
+  <!-- Edit Mode -->
+  <div data-task-edit-target="editMode" class="hidden">
+    <%= form_with(model: task, url: list_task_path(@list, task), method: :patch) do |f| %>
+      <div class="flex items-center gap-2">
+        <%= f.text_field :title, 
+            class: "block w-full rounded-md shadow-sm",
+            data: { "task-edit-target": "input" } %>
+            
+        <div class="flex items-center gap-2">
+          <button type="submit" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+            Save
+          </button>
+          <button type="button" data-action="task-edit#hideEdit" class="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            Cancel
+          </button>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

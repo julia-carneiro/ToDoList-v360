@@ -11,7 +11,7 @@
 
     <h1 class="text-3xl font-bold text-gray-900 mb-8">Tasks</h1>
     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-      <%= form_with(model: [@list, Task.new], class: "space-y-6", remote: true) do |form| %>
+      <%= form_with(model: [@list, Task.new], class: "space-y-6") do |form| %>
         <% if @task&.errors&.any? %>
           <div class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
             <h3 class="font-semibold"><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h3>

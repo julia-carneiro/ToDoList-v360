@@ -25,7 +25,7 @@ Rails.application.configure do
     config.action_controller.perform_caching = false
   end
 
-  config.action_mailer.default_url_options = { host: "juliatask.juserdev.com" }
+  config.action_mailer.default_url_options = { host: "taskify.juserdev.com" }
   config.action_mailer.smtp_settings = {
     domain: Rails.application.credentials.dig(:smtp, :domain),
     user_name: Rails.application.credentials.dig(:smtp, :user_name),

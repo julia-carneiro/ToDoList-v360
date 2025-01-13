@@ -23,10 +23,8 @@ class TasksController < ApplicationController
   # POST /tasks or /tasks.json
   def create
     @task = @list.tasks.build(task_params)
-
     respond_to do |format|
       if @task.save
-        format.html { redirect_to [ @list, @task ], notice: "Task was successfully created." }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -41,13 +39,13 @@ class TasksController < ApplicationController
       @task.update(completed: params[:completed] == "true")
       Rails.logger.info "Task #{@task.id} updated: #{@task.completed}"
       respond_to do |format|
-        format.html { redirect_to list_tasks_path(@list), notice: "Task status updated successfully." }
+        format.html { redirect_to list_tasks_path(@list) }
       end
     else
       respond_to do |format|
         if @task.update(task_params)
           Rails.logger.info "Task #{@task.id} updated: #{@task.attributes}"
-          format.html { redirect_to [ @list, @task ], notice: "Task was successfully updated." }
+          format.html { redirect_to [ @list, @task ] }
           format.json { render :show, status: :ok, location: @task }
         else
           format.html { render :edit, status: :unprocessable_entity }
@@ -64,7 +62,7 @@ class TasksController < ApplicationController
     @task.destroy!
 
     respond_to do |format|
-      format.html { redirect_to [ @list, @task ], status: :see_other, notice: "Task was successfully destroyed." }
+      format.html { redirect_to [ @list, @task ], status: :see_other }
       format.json { head :no_content }
     end
   end

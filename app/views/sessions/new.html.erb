@@ -1,34 +1,59 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <% if alert = flash[:alert] %>
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
-  <% end %>
+<div class="min-h-screen w-full bg-gradient-to-r from-rose-500 to-orange-300 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+  <div class="max-w-md w-full bg-white rounded-2xl shadow-lg p-8">
+    <div class="text-center mb-8">
+      <% if alert = flash[:alert] %>
+        <p class="py-2 px-3 bg-rose-50 mb-5 text-rose-600 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
+      <% end %>
 
-  <% if notice = flash[:notice] %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <h1 class="font-bold text-4xl">Sign in</h1>
-
-  <%= form_with url: session_url, class: "contents" do |form| %>
-    <div class="my-5">
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "block shadow rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+      <% if notice = flash[:notice] %>
+        <p class="py-2 px-3 bg-emerald-50 mb-5 text-emerald-600 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+      <% end %>
+      <h2 class="text-rose-500 text-4xl font-bold text-gray-700 tracking-tight">
+        Taskify
+      </h2>
+      <p class="mt-2 text-sm text-gray-500">
+        Organize your life, achieve your goals!
+      </p>
     </div>
 
-    <div class="my-5">
-      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "block shadow rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
-    </div>
-
-    <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-      <div class="inline">
-        <%= form.submit "Sign in", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form_with url: session_url, class: "space-y-6" do |form| %>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Email address</label>
+        <%= form.email_field :email_address,
+            required: true,
+            autofocus: true,
+            autocomplete: "username",
+            placeholder: "you@example.com",
+            value: params[:email_address],
+            class: "mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition duration-150" %>
       </div>
 
-      <div class="mt-4 text-sm text-gray-500 sm:mt-0">
-        <%= link_to "Forgot password?", new_password_path, class: "text-gray-700 underline" %>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Password</label>
+        <%= form.password_field :password,
+            required: true,
+            autocomplete: "current-password",
+            placeholder: "••••••••",
+            class: "mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition duration-150" %>
       </div>
-    </div>
 
-    <%= link_to "Sign Up", new_user_path, class: "mt-8 text-blue-700 underline" %>
-    
-  <% end %>
+      <div class="flex items-center justify-between">
+        <%= form.submit "Sign in",
+            class: "w-1/2 flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 transition duration-150" %>
+        
+        <%= link_to "Forgot password?",
+            new_password_path,
+            class: "text-sm text-rose-400 hover:text-rose-500 hover:underline transition duration-150" %>
+      </div>
+    <% end %>
+
+    <div class="mt-8 text-center">
+      <p class="text-sm text-gray-500">
+        Don't have an account?
+        <%= link_to "Sign Up",
+            new_user_path,
+            class: "font-medium text-rose-400 hover:text-rose-500 hover:underline transition duration-150" %>
+      </p>
+    </div>
+  </div>
 </div>

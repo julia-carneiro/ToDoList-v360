@@ -1,21 +1,53 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <% if alert = flash[:alert] %>
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
-  <% end %>
+<div class="min-h-screen w-full bg-gradient-to-r from-rose-500 to-orange-300 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+  <div class="max-w-md w-full bg-white rounded-2xl shadow-lg p-8">
+    <div class="text-center mb-8">
+      <% if alert = flash[:alert] %>
+        <p class="py-2 px-3 bg-rose-50 mb-5 text-rose-600 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
+      <% end %>
 
-  <h1 class="font-bold text-4xl">Update your password</h1>
-
-  <%= form_with url: password_path(params[:token]), method: :put, class: "contents" do |form| %>
-    <div class="my-5">
-      <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter new password", maxlength: 72, class: "block shadow rounded-md border border-gray-400 outline-none focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+      <div class="inline-flex p-3 rounded-full bg-rose-100 text-rose-600 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+      </div>
+      
+      <h2 class="text-rose-500 text-3xl font-bold tracking-tight">
+        Update your password
+      </h2>
+      <p class="mt-2 text-sm text-gray-500">
+        Enter and confirm your new password
+      </p>
     </div>
 
-    <div class="my-5">
-      <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat new password", maxlength: 72, class: "block shadow rounded-md border border-gray-400 outline-none focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
-    </div>
+    <%= form_with url: password_path(params[:token]), method: :put, class: "space-y-6" do |form| %>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">New password</label>
+        <%= form.password_field :password,
+            required: true,
+            autocomplete: "new-password",
+            placeholder: "••••••••",
+            maxlength: 72,
+            class: "mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-300 transition duration-150" %>
+      </div>
 
-    <div class="inline">
-      <%= form.submit "Save", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
-    </div>
-  <% end %>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Confirm new password</label>
+        <%= form.password_field :password_confirmation,
+            required: true,
+            autocomplete: "new-password",
+            placeholder: "••••••••",
+            maxlength: 72,
+            class: "mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-300 transition duration-150" %>
+      </div>
+
+      <div class="flex flex-col space-y-4">
+        <%= form.submit "Update password",
+            class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-300 transition duration-150" %>
+        
+        <%= link_to "Back to Sign in",
+            new_session_path,
+            class: "text-center text-sm text-rose-400 hover:text-rose-500 hover:underline transition duration-150" %>
+      </div>
+    <% end %>
+  </div>
 </div>

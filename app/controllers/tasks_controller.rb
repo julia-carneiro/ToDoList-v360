@@ -54,7 +54,6 @@ class TasksController < ApplicationController
     @task.destroy!
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove("task_#{@task.id}") }
       format.html { redirect_to [ @list, @task ], status: :see_other }
       format.json { head :no_content }
     end

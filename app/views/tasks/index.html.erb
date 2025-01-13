@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-gradient-to-br from-rose-50 to-orange-50 pb-20">
   <div class="w-full px-4 sm:px-6 lg:px-8 py-6">
-    <!--Header with Back Button -->
+    <!--Header with Back Button and Actions -->
     <div class="flex items-center justify-between mb-8">
       <%= link_to lists_path, 
           class: "text-rose-600 hover:text-rose-700 flex items-center gap-2 font-medium bg-white/80 backdrop-blur-sm py-2 px-4 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md" do %>
@@ -9,50 +9,85 @@
         </svg>
         Back to Lists
       <% end %>
+
+      <!-- Delete list on the right -->
+      <div class="flex items-center gap-3">
+        <%= button_to list_path(@list), 
+            method: :delete,
+            class: "text-red-600 hover:text-red-700 flex items-center gap-2 font-medium bg-white/80 backdrop-blur-sm py-2 px-4 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md",
+            form: { data: { turbo_confirm: "Are you sure? This will delete the list and all its tasks." } } do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          Delete List
+        <% end %>
+      </div>
     </div>
 
-    <!-- Page Title -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
+    <!-- Page Title with Description -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
       <div>
         <h1 class="text-4xl font-bold text-gray-900">
-          <span class="bg-gradient-to-r from-rose-600 to-orange-600 bg-clip-text text-transparent"><%= @list.name.capitalize  %></span>
+          <span class="bg-gradient-to-r from-rose-600 to-orange-600 bg-clip-text text-transparent"><%= @list.name.capitalize %></span>
         </h1>
-        <p class="mt-2 text-gray-600"><%= @list.description.capitalize  %></p>
+        <% if @list.description.present? %>
+          <p class="mt-2 text-gray-600"><%= @list.description.capitalize %></p>
+        <% end %>
       </div>
     </div>
 
     <!-- Task Form -->
-    <div class="bg-white/80 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-all duration-200 p-6 mb-8">
+    <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 mb-8">
       <%= render 'tasks/form', task: @task %>
     </div>
 
-    <!-- Tasks List -->
+    <!-- Tasks List or Empty State -->
     <div class="space-y-6 w-full" id="tasks">
-      <% @tasks.each do |task| %>  
-        <%= render 'tasks/task', task: task %>
+      <% if @tasks.any? %>
+        <% @tasks.each do |task| %>  
+          <%= render 'tasks/task', task: task %>
+        <% end %>
+      <% else %>
+        <div class="text-center py-12 px-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm">
+          <div class="inline-flex p-4 rounded-full bg-rose-100 text-rose-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">No tasks yet</h3>
+          <p class="text-gray-600 mb-6">Start adding tasks to your list and track your progress!</p>
+          <div class="inline-flex items-center gap-2 text-rose-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Use the form above to create your first task</span>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
 
-  <!-- Fixed Pagination at Bottom -->
-  <div class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 py-4 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-center items-center gap-3">
-        <%= link_to_if @tasks.prev_page, 'Previous', list_tasks_path(page: @tasks.prev_page), 
-            class: "text-gray-700 hover:text-rose-600 #{@tasks.prev_page ? '' : 'opacity-50 cursor-not-allowed'}" %>
-        
-        <div class="flex items-center gap-2">
-          <% (@tasks.current_page-1..@tasks.current_page+1).each do |page| %>
-            <% if page > 0 && page <= @tasks.total_pages %>
-              <%= link_to page, list_tasks_path(page: page),
-                  class: "px-4 py-2 rounded-md transition-colors duration-200 #{page == @tasks.current_page ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-sm' : 'text-gray-700 hover:bg-gray-100'}" %>
+  <!-- Fixed Pagination at Bottom (only show if there are tasks) -->
+  <% if @tasks.any? %>
+    <div class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 py-4 shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-center items-center gap-3">
+          <%= link_to_if @tasks.prev_page, 'Previous', list_tasks_path(@list, page: @tasks.prev_page), 
+              class: "text-gray-700 hover:text-rose-600 #{@tasks.prev_page ? '' : 'opacity-50 cursor-not-allowed'}" %>
+          
+          <div class="flex items-center gap-2">
+            <% (@tasks.current_page-1..@tasks.current_page+1).each do |page| %>
+              <% if page > 0 && page <= @tasks.total_pages %>
+                <%= link_to page, list_tasks_path(@list, page: page),
+                    class: "px-4 py-2 rounded-md transition-colors duration-200 #{page == @tasks.current_page ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-sm' : 'text-gray-700 hover:bg-gray-100'}" %>
+              <% end %>
             <% end %>
-          <% end %>
-        </div>
+          </div>
 
-        <%= link_to_if @tasks.next_page, 'Next', list_tasks_path(page: @tasks.next_page),
-            class: "text-gray-700 hover:text-rose-600 #{@tasks.next_page ? '' : 'opacity-50 cursor-not-allowed'}" %>
+          <%= link_to_if @tasks.next_page, 'Next', list_tasks_path(@list, page: @tasks.next_page),
+              class: "text-gray-700 hover:text-rose-600 #{@tasks.next_page ? '' : 'opacity-50 cursor-not-allowed'}" %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 </div>

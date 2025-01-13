@@ -1,19 +1,15 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[ show edit update destroy ]
+  before_action :set_task, only: %i[ edit update destroy ]
   before_action :set_list
 
   # GET /tasks or /tasks.json
   def index
     @tasks = @list.tasks.page(params[:page]).per(4)
+    @task = Task.new
   end
 
   # GET /tasks/1 or /tasks/1.json
   def show
-  end
-
-  # GET /tasks/new
-  def new
-    @task = Task.new
   end
 
   # GET /tasks/1/edit

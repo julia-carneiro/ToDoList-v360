@@ -1,8 +1,8 @@
-<div class="w-full bg-gray-50">
+<div class="w-full p-6">
   <div class="w-full px-4 sm:px-6 lg:px-8 py-4">
     <div class="flex justify-end items-center mb-4">
       <div>
-        <%= button_to session_path, method: :delete, class: "text-gray-600 hover:text-gray-900 flex items-center gap-2 font-bold" do %>
+        <%= button_to session_path, method: :delete, class: "text-rose-600 hover:text-rose-900 flex items-center gap-2 font-bold" do %>
           Logout
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
@@ -19,7 +19,7 @@
       <% @lists.each do |list| %>
         <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
           <div class="mb-4">
-            <h2 class="font-semibold text-lg">Name: <%= list.name %></h2>
+            <h2 class="font-semibold text-lg"><%= list.name %></h2>
             <p class="text-gray-600">Description: <%= list.description %></p>
           </div>
           <%= link_to list_tasks_path(list), class: "text-blue-600 hover:text-blue-800 flex items-center justify-end gap-2" do %>

@@ -18,10 +18,10 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: <%= ENV["DATABASE_HOST"] %>
-  port: <%= ENV["DATABASE_PORT"] %>
-  username: <%= ENV["DATABASE_USERNAME"] %>
-  password: <%= ENV["DATABASE_PASSWORD"] %>
+  username: postgres
+  password: teste
+  host: localhost
+  port: 5000
 
 
 development:
@@ -86,6 +86,8 @@ production:
   primary: &primary_production
     <<: *default
     database: todolist_production
+    username: todolist
+    password: <%= ENV["TODOLIST_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
     database: todolist_production_cache

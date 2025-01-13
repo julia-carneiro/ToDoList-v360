@@ -17,6 +17,8 @@ class TasksController < ApplicationController
     @task = @list.tasks.build(task_params)
     respond_to do |format|
       if @task.save
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("task_#{@task.id}", partial: "tasks/task", locals: { task: @task }) }
+        format.html { redirect_to list_tasks_path(@list) }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new, status: :unprocessable_entity }

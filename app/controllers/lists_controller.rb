@@ -1,5 +1,6 @@
 class ListsController < ApplicationController
   before_action :set_list, only: %i[ update destroy ]
+  before_action :verify_owner, only: %i[ update destroy ]
 
   # GET /lists or /lists.json
   def index
@@ -51,11 +52,18 @@ class ListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_list
-      @list = current_user.lists.find(params.expect(:id))
+      @list = List.find_by(id: params[:id])
+      redirect_to lists_path, alert: "You don't have access to this list" if @list.nil?
     end
 
     # Only allow a list of trusted parameters through.
     def list_params
       params.expect(list: [ :name, :description ])
     end
+
+  def verify_owner
+    unless @list.user == current_user
+      redirect_to lists_path, alert: "You don't have access to this list"
+    end
+  end
 end

@@ -1,6 +1,8 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ update destroy ]
   before_action :set_list
+  before_action :verify_owner
+
 
   # GET /tasks or /tasks.json
   def index
@@ -76,5 +78,11 @@ class TasksController < ApplicationController
     # Only allow a list of trusted parameters through.
     def task_params
       params.expect(task: [ :title, :completed, :list_id ])
+    end
+
+    def verify_owner
+      unless @list.user == current_user
+        redirect_to lists_path, alert: "You don't have access to this list"
+      end
     end
 end

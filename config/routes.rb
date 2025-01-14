@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   resources :passwords, param: :token
   resources :lists, except: [ :show ] do
-    resources :tasks
+    resources :tasks, except: [ :show ]
   end
 
   root to: "lists#index"

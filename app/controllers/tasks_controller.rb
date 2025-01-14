@@ -1,7 +1,8 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ update destroy ]
-  before_action :verify_owner, only: %i[ update destroy ]
   before_action :set_list
+  before_action :verify_owner
+
 
   # GET /tasks or /tasks.json
   def index

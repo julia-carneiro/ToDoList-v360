@@ -14,10 +14,6 @@ class TasksController < ApplicationController
     end
   end
 
-  # GET /tasks/1 or /tasks/1.json
-  def show
-  end
-
   # POST /tasks or /tasks.json
   def create
     @task = @list.tasks.build(task_params)
@@ -73,6 +69,7 @@ class TasksController < ApplicationController
 
     def set_list
       @list = List.find_by(id: params[:list_id])
+      redirect_to lists_path, alert: "You don't have access to this list" if @list.nil?
     end
 
     # Only allow a list of trusted parameters through.

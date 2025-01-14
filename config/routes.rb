@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   end
   root to: "lists#index"
   get "confirm/:token", to: "confirmations#edit", as: :edit_confirmation
+  match "*path", to: "application#not_found", via: :all
 end

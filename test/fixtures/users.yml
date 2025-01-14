@@ -1,9 +1,17 @@
-<% password_digest = BCrypt::Password.create("password") %>
-
 one:
-  email_address: one@example.com
-  password_digest: <%= password_digest %>
+  username: "One"
+  email_address: "user.one@example.com"
+  password_digest: <%= BCrypt::Password.create('password') %>
+  confirmation_token: null
 
 two:
-  email_address: two@example.com
-  password_digest: <%= password_digest %>
+  username: "Two"
+  email_address: "user.two@example.com"
+  password_digest: <%= BCrypt::Password.create('password') %>
+  confirmation_token: null
+
+unconfirmed:
+  username: "Unconfirmed"
+  email_address: "user.unconfirmed@example.com"
+  password_digest: <%= BCrypt::Password.create('password') %>
+  confirmation_token: <%= SecureRandom.urlsafe_base64 %>

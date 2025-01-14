@@ -28,10 +28,10 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
       <div>
         <h1 class="text-4xl font-bold text-gray-900">
-          <span class="bg-gradient-to-r from-rose-600 to-orange-600 bg-clip-text text-transparent"><%= @list.name.capitalize %></span>
+          <span class="bg-gradient-to-r from-rose-600 to-orange-600 bg-clip-text text-transparent"><%= @list.name.capitalize.truncate(30, omission: "[...]") %></span>
         </h1>
         <% if @list.description.present? %>
-          <p class="mt-2 text-gray-600"><%= @list.description.capitalize %></p>
+          <p class="mt-2 text-gray-600"><%= @list.description.capitalize.truncate(30, omission: "[...]") %></p>
         <% end %>
       </div>
     </div>

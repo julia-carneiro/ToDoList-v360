@@ -16,7 +16,7 @@
         <% end %>
         
         <span class="<%= task.completed ? 'line-through text-gray-500' : 'text-gray-900' %>">
-          <%= task.title %>
+          <%= task.title.truncate(30, omission: "[...]") %>
         </span>
       </div>
       

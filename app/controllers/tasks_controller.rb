@@ -6,6 +6,10 @@ class TasksController < ApplicationController
   def index
     @tasks = @list.tasks.page(params[:page]).per(4)
     @task = Task.new
+    respond_to do |format|
+      format.html
+      format.json { render json: @lists }
+    end
   end
 
   # GET /tasks/1 or /tasks/1.json
